@@ -5,21 +5,9 @@ import { HiDocumentDuplicate } from "react-icons/hi2";
 import { FaTrashAlt } from "react-icons/fa";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import { FaEdit } from "react-icons/fa";
-import App, {
-  tasks,
-  input,
-  formRef,
-  inputRef,
-  setInput,
-  handleBtnPlus,
-  btnPlus,
-  selectTaskIndex,
-  handleDuplicate,
-  setSelectTaskIndex,
-  handleEdit,
-  handleDelete,
-  handleToggleComplete,
-} from "./index.js";
+import { FaCheckCircle } from "react-icons/fa";
+import { FaRegCircle } from "react-icons/fa";
+import App from "./index.js";
 function AppToDo() {
   const cx = classNames.bind(style);
   const {
@@ -27,6 +15,7 @@ function AppToDo() {
     input,
     selectTaskIndex,
     inputRef,
+    checkComplete,
     handleAddTasks,
     formRef,
     setInput,
@@ -34,32 +23,44 @@ function AppToDo() {
     setSelectTaskIndex,
     btnPlus,
     handleDuplicate,
-
     handleEdit,
     handleDelete,
     handleToggleComplete,
   } = App();
-  // const [tasks, setTasks] = useState([]);
   return (
     <div className={cx("container")}>
       <h1>📋 To-Do List</h1>
       <div onClick={handleBtnPlus} className={cx("btl-plus")}>
         <CiCirclePlus />
       </div>
-      <ul>
+      <ul className={cx("list-tasks")}>
         {tasks.map((task, index) => (
           <li
+            className={cx("task")}
             key={index}
-            onClick={() => setSelectTaskIndex(index)}
             style={{
               textDecoration: task.completed ? "line-through" : "none",
               cursor: "pointer",
             }}
           >
-            {task.text}
+            <p
+              className={cx("name-task")}
+              onClick={() => setSelectTaskIndex(index)}
+            >
+              <FaRegCircle style={{ marginRight: "10px" }} size={40} />
+              {task.text}
+            </p>
+            <span
+              onClick={(e) => handleToggleComplete(e, index)}
+              className={cx("icon-complete", { checked: checkComplete })}
+            >
+              <FaRegCircle className={cx("circle")} />
+              <FaCheckCircle className={cx("check")} />
+            </span>
             {/* hien thi tat ca cac nut neu chon dung task */}
-            {selectTaskIndex == index && (
-              <div>
+
+            {selectTaskIndex === index && (
+              <div className={cx("btn-wrapper")} ref={formRef}>
                 <button onClick={(e) => handleDelete(e, index)}>
                   <FaTrashAlt />
                   delete
@@ -81,21 +82,36 @@ function AppToDo() {
           </li>
         ))}
       </ul>
+
+      {/* form */}
       <form>
-        <div className={cx("input-page")}>
-          {btnPlus && (
-            <div ref={formRef}>
-              <input
-                ref={inputRef}
-                type="text"
-                placeholder="Enter your task..."
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-              ></input>
-              <button onClick={handleAddTasks}>add tasks</button>
+        {btnPlus && (
+          <div className={cx("overplay")}>
+            <div ref={formRef} className={cx("form")}>
+              <div className={cx("form-input-wrapper")}>
+                <input
+                  className={cx("input")}
+                  type="text"
+                  ref={inputRef}
+                  placeholder="Enter your task..."
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                />
+                {input !== "" && (
+                  <span
+                    className={cx("clear-icon")}
+                    onClick={() => setInput("")}
+                  >
+                    ✕
+                  </span>
+                )}
+                <button className={cx("btn-add")} onClick={handleAddTasks}>
+                  add tasks
+                </button>
+              </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </form>
     </div>
   );

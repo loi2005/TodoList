@@ -4,7 +4,7 @@ function App() {
   const [input, setInput] = useState("");
   const [btnPlus, setBtnPlus] = useState(false);
   const [selectTaskIndex, setSelectTaskIndex] = useState(null);
-  const [confirmDeleteIndex, setConfirmDeleteIndex] = useState(null);
+  const [checkComplete, setCheckComplete] = useState(false);
 
   //fcous on
   const inputRef = useRef(null);
@@ -20,6 +20,7 @@ function App() {
     const handleClickOutside = (e) => {
       if (formRef.current && !formRef.current.contains(e.target)) {
         setBtnPlus(false);
+        setSelectTaskIndex(null);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -78,7 +79,6 @@ function App() {
     const updatedTasks = tasks.filter((_, i) => i !== index);
     setTasks(updatedTasks);
     setSelectTaskIndex(null);
-    setSelectTaskIndex(null);
   };
 
   const handleToggleComplete = (e, index) => {
@@ -87,7 +87,9 @@ function App() {
     updatedTasks[index].completed = !updatedTasks[index].completed;
     setTasks(updatedTasks);
     setSelectTaskIndex(null);
+    setCheckComplete(!checkComplete);
   };
+  console.log(checkComplete);
 
   return {
     tasks,
@@ -96,6 +98,7 @@ function App() {
     formRef,
     inputRef,
     selectTaskIndex,
+    checkComplete,
     handleAddTasks,
     setInput,
     handleBtnPlus,

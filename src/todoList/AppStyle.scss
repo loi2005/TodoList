@@ -1,6 +1,130 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 .container {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: rgb(102, 90, 214);
+  height: 100vh;
+  width: 100%;
+  color: #fff;
 }
 .btl-plus {
   font-size: 50px;
+}
+.overplay {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.form {
+  width: 350px;
+  height: 400px;
+  background-color: #663399;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+  padding-top: 20px;
+  position: relative;
+}
+//icon check
+.list-tasks {
+  width: 30%;
+  height: 55%;
+  background-color: #fff;
+  overflow-y: auto;
+  border-radius: 5px;
+  padding: 20px 50px;
+  box-shadow: inset 4px 4px 20px rgba(0, 0, 0, 0.426); /* Bóng đổ vào trong */
+}
+
+.task {
+  color: #333;
+  font-size: 1.2rem;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+  position: relative;
+}
+.name-task {
+  display: flex;
+
+  align-items: center;
+}
+.icon-complete {
+  font-size: 25px;
+  position: relative;
+}
+.check {
+  position: absolute;
+  left: 0;
+  top: 2px;
+  transform: scale(0);
+  transition: all 0.2s ease;
+}
+.checked .check {
+  transform: scale(1);
+}
+
+.form-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 90%;
+  position: relative;
+}
+
+.input {
+  flex: 1;
+  height: 40px;
+  padding-left: 10px;
+  border-radius: 3px;
+  border: none;
+  outline: none;
+}
+
+.clear-icon {
+  position: absolute;
+  right: 120px; // điều chỉnh nếu cần (tuỳ chiều dài của button)
+  cursor: pointer;
+  color: #999;
+  font-weight: bold;
+  z-index: 2;
+}
+
+.btn-add {
+  height: 40px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 3px;
+  background-color: rgba(248, 60, 8, 0.8);
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.btn-wrapper {
+  position: absolute;
+  bottom: -22px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
