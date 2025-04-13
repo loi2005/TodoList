@@ -1,10 +1,22 @@
 import { useState, useRef, useEffect } from "react";
+import keywordIcons from "./KeywordIcons";
 function App() {
   const [tasks, setTasks] = useState([]);
   const [input, setInput] = useState("");
   const [btnPlus, setBtnPlus] = useState(false);
   const [selectTaskIndex, setSelectTaskIndex] = useState(null);
   const [checkComplete, setCheckComplete] = useState(false);
+  const [icons, setIcons] = useState(null);
+  const handleInputChange = (e) => {
+    const value = e.target.value.toLowerCase();
+    setInput(value);
+    // looking for keyWord in input
+    const matchedKeyword = Object.keys(keywordIcons).find((keyword) =>
+      value.includes(keyword)
+    );
+    // if in input has legal keyword
+    setIcons(matchedKeyword ? keywordIcons[matchedKeyword] : null);
+  };
 
   //fcous on
   const inputRef = useRef(null);
@@ -12,7 +24,7 @@ function App() {
     if (btnPlus && inputRef.current) {
       inputRef.current.focus();
     }
-  }, btnPlus);
+  }, [btnPlus]);
 
   // hidden form
   const formRef = useRef(null);
@@ -45,6 +57,7 @@ function App() {
       id: Date.now(),
       text: input,
       completed: false,
+      icon: icons,
     };
     setTasks([...tasks, newTask]);
     setInput("");
@@ -76,9 +89,16 @@ function App() {
 
   const handleDelete = (e, index) => {
     e.stopPropagation();
-    const updatedTasks = tasks.filter((_, i) => i !== index);
+
+    const updatedTasks = [...tasks];
+    updatedTasks[index].removing = true;
+
     setTasks(updatedTasks);
     setSelectTaskIndex(null);
+    // Đợi animation chạy xong rồi mới xoá khỏi danh sách
+    setTimeout(() => {
+      setTasks((prev) => prev.filter((_, i) => i !== index));
+    }, 300); // thời gian trùng với animation
   };
 
   const handleToggleComplete = (e, index) => {
@@ -89,16 +109,16 @@ function App() {
     setSelectTaskIndex(null);
     setCheckComplete(!checkComplete);
   };
-  console.log(checkComplete);
-
   return {
     tasks,
     input,
+    icons,
     btnPlus,
     formRef,
     inputRef,
     selectTaskIndex,
     checkComplete,
+    setIcons,
     handleAddTasks,
     setInput,
     handleBtnPlus,
@@ -107,6 +127,7 @@ function App() {
     handleEdit,
     handleDelete,
     handleToggleComplete,
+    handleInputChange,
   };
 }
 

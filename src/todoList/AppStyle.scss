@@ -1,3 +1,33 @@
+@keyframes zoomIn {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes zoomOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+}
+@keyframes translateIn {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 * {
   margin: 0;
   padding: 0;
@@ -38,7 +68,6 @@
   padding-top: 20px;
   position: relative;
 }
-//icon check
 .list-tasks {
   width: 30%;
   height: 55%;
@@ -46,32 +75,65 @@
   overflow-y: auto;
   border-radius: 5px;
   padding: 20px 50px;
-  box-shadow: inset 4px 4px 20px rgba(0, 0, 0, 0.426); /* Bóng đổ vào trong */
+  box-shadow: inset 4px 4px 20px rgba(0, 0, 0, 0.426);
 }
-
+.task.removing {
+  animation: zoomOut 0.3s ease-in-out forwards;
+}
 .task {
-  color: #333;
-  font-size: 1.2rem;
-  list-style: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 22px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 10px;
+  animation: zoomIn 0.3s ease-in-out;
+  cursor: pointer;
+}
+.task-wrapper {
+  display: flex;
+  color: #000;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  border-radius: 5px;
+  height: 50px;
+  transition: all 0.2s ease;
+  &:hover {
+    background-color: rgba(76, 216, 255, 0.374);
+  }
+}
+.task-wrapper.selected {
+  background-color: rgba(76, 216, 255, 0.374);
 }
 .name-task {
-  display: flex;
-
-  align-items: center;
+  background-color: #fff;
+  flex: 1;
+  display: inline;
+  white-space: normal;
+  word-break: break-word;
+  background: linear-gradient(to right, #000000 100%, transparent 0) no-repeat;
+  background-size: 0% 2px;
+  background-position: 0 center;
+  transition: background-size 0.2s ease-in-out;
+  border-radius: 3px;
+  padding: 5px 0;
+  height: 100%;
 }
+
+.name-task.completed {
+  background-size: 100% 2px;
+  color: rgba(0, 0, 0, 0.4);
+}
+
 .icon-complete {
   font-size: 25px;
   position: relative;
+  display: flex;
+  align-items: center;
 }
 .check {
   position: absolute;
   left: 0;
-  top: 2px;
   transform: scale(0);
   transition: all 0.2s ease;
 }
@@ -86,7 +148,6 @@
   width: 90%;
   position: relative;
 }
-
 .input {
   flex: 1;
   height: 40px;
@@ -119,12 +180,41 @@
     transform: scale(1.05);
   }
 }
-
 .btn-wrapper {
-  position: absolute;
-  bottom: -22px;
   width: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  background-color: rgb(0, 0, 0);
+  height: 50px;
+  margin-top: 10px;
+  border-radius: 3px;
+  animation: translateIn 0.3s ease-in-out;
+}
+.btn-wrapper button {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 5px;
+  border-radius: 3px;
+  border: none;
+  padding: 5px 0;
+  background-color: #52aef5d8;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  &:hover {
+    opacity: 0.8;
+  }
+}
+.demo_icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  background-color: rgb(144, 119, 118);
 }

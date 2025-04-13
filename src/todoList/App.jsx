@@ -8,25 +8,30 @@ import { FaEdit } from "react-icons/fa";
 import { FaCheckCircle } from "react-icons/fa";
 import { FaRegCircle } from "react-icons/fa";
 import App from "./index.js";
+import { GiConsoleController } from "react-icons/gi";
 function AppToDo() {
   const cx = classNames.bind(style);
+
   const {
     tasks,
     input,
     selectTaskIndex,
     inputRef,
-    checkComplete,
+    icons,
     handleAddTasks,
     formRef,
     setInput,
     handleBtnPlus,
     setSelectTaskIndex,
+    setIcons,
     btnPlus,
     handleDuplicate,
     handleEdit,
     handleDelete,
     handleToggleComplete,
+    handleInputChange,
   } = App();
+  console.log(tasks);
   return (
     <div className={cx("container")}>
       <h1>📋 To-Do List</h1>
@@ -35,28 +40,28 @@ function AppToDo() {
       </div>
       <ul className={cx("list-tasks")}>
         {tasks.map((task, index) => (
-          <li
-            className={cx("task")}
-            key={index}
-            style={{
-              textDecoration: task.completed ? "line-through" : "none",
-              cursor: "pointer",
-            }}
-          >
-            <p
-              className={cx("name-task")}
-              onClick={() => setSelectTaskIndex(index)}
+          <li className={cx("task", { removing: task.removing })} key={index}>
+            <div
+              className={cx("task-wrapper", {
+                selected: selectTaskIndex === index,
+              })}
             >
-              <FaRegCircle style={{ marginRight: "10px" }} size={40} />
-              {task.text}
-            </p>
-            <span
-              onClick={(e) => handleToggleComplete(e, index)}
-              className={cx("icon-complete", { checked: checkComplete })}
-            >
-              <FaRegCircle className={cx("circle")} />
-              <FaCheckCircle className={cx("check")} />
-            </span>
+              <p onClick={() => setSelectTaskIndex(index)}>
+                <span
+                  className={cx("name-task", { completed: task.completed })}
+                >
+                  {task.icon && <p>{task.icon}</p>}
+                  {task.text}
+                </span>
+              </p>
+              <span
+                onClick={(e) => handleToggleComplete(e, index)}
+                className={cx("icon-complete", { checked: task.completed })}
+              >
+                <FaRegCircle className={cx("circle")} />
+                <FaCheckCircle className={cx("check")} />
+              </span>
+            </div>
             {/* hien thi tat ca cac nut neu chon dung task */}
 
             {selectTaskIndex === index && (
@@ -89,13 +94,15 @@ function AppToDo() {
           <div className={cx("overplay")}>
             <div ref={formRef} className={cx("form")}>
               <div className={cx("form-input-wrapper")}>
+                <p className={cx("demo_icon")}>{icons}</p>
                 <input
                   className={cx("input")}
                   type="text"
                   ref={inputRef}
                   placeholder="Enter your task..."
                   value={input}
-                  onChange={(e) => setInput(e.target.value)}
+                  onFocus={() => setIcons(null)}
+                  onChange={handleInputChange}
                 />
                 {input !== "" && (
                   <span
